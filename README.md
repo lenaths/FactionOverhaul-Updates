@@ -1,20 +1,35 @@
-# AC4 Faction Overhaul — Update Channel
+# AC4 Faction Overhaul — automatic update channel
 
-Public update channel for **AC4 Faction Overhaul**.
+This repository is the **single source of truth** for AC4 Faction Overhaul launcher/runtime distribution.
 
-This repository is used by the launcher to discover launcher and runtime updates.
+## Fully automatic flow
 
-## Stable manifest
+1. The current source bundle is stored under `source/parts/`.
+2. Updating `source/READY` starts the Windows GitHub Actions build.
+3. GitHub compiles the **Win32 runtime, injector, launcher and self-updater**.
+4. The workflow packages both update layers and computes SHA-256 hashes.
+5. It writes `update.json` and commits versioned ZIPs to `releases/`.
+6. Installed launchers read the raw `main/update.json`, update the launcher first, then the mod runtime.
 
-`update.json`
+Stable manifest:
 
-The launcher reads the raw `main/update.json` manifest and updates itself first, then the mod runtime.
+`https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/update.json`
 
-## Publishing
+Users only need to launch `FactionOverhaulLauncher.exe`.
 
-Release artifacts are versioned and immutable:
+## Repository layout
 
-- `launcher/FactionOverhaulLauncher-<version>.zip`
-- `runtime/FactionOverhaulRuntime-<version>.zip`
+```text
+.github/workflows/build-publish.yml
+source/
+  parts/
+  source.sha256
+  READY
+releases/
+  FactionOverhaulLauncher-<version>.zip
+  FactionOverhaulRuntime-<version>.zip
+  latest.txt
+update.json
+```
 
-The SHA-256 stored in `update.json` must match the uploaded package.
+Generated release files are only updated after a successful Windows build.
