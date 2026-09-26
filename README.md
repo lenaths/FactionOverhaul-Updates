@@ -4,12 +4,13 @@ This repository is the **single source of truth** for AC4 Faction Overhaul launc
 
 ## Fully automatic flow
 
-1. The current source bundle is stored under `source/parts/`.
-2. Updating `source/READY` starts the Windows GitHub Actions build.
-3. GitHub compiles the **Win32 runtime, injector, launcher and self-updater**.
-4. The workflow packages both update layers and computes SHA-256 hashes.
-5. It writes `update.json` and commits versioned ZIPs to `releases/`.
-6. Installed launchers read the raw `main/update.json`, update the launcher first, then the mod runtime.
+1. The current buildable source is stored as `source/FactionOverhaul-core-source.b64`.
+2. `source/source.sha256` verifies the decoded source ZIP.
+3. Updating `source/READY` starts the Windows build.
+4. GitHub compiles the **Win32 runtime, injector, launcher and self-updater**.
+5. A successful build packages both update layers and computes SHA-256 hashes.
+6. The workflow writes `update.json` and versioned ZIPs to `releases/`.
+7. Installed launchers read `update.json`, update the launcher first, then the runtime.
 
 Stable manifest:
 
@@ -22,14 +23,16 @@ Users only need to launch `FactionOverhaulLauncher.exe`.
 ```text
 .github/workflows/build-publish.yml
 source/
-  parts/
+  FactionOverhaul-core-source.b64
   source.sha256
+  README.md
   READY
 releases/
   FactionOverhaulLauncher-<version>.zip
   FactionOverhaulRuntime-<version>.zip
   latest.txt
 update.json
+AUTOMATION.md
 ```
 
-Generated release files are only updated after a successful Windows build.
+`update.json` is only replaced after a successful Windows build, so a broken source revision cannot be advertised to installed launchers.
