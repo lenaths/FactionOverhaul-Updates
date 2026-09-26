@@ -27,9 +27,7 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
-          $parts = Get-ChildItem "source/parts/part-*.b64" | Sort-Object Name
-          if ($parts.Count -eq 0) { throw "No source parts found." }
-          $b64 = ($parts | ForEach-Object { Get-Content $_.FullName -Raw }) -join ""
+          $b64 = (Get-Content "source/FactionOverhaul-core-source.b64" -Raw) -replace "\\s", ""
           [IO.File]::WriteAllBytes("FactionOverhaul-core-source.zip", [Convert]::FromBase64String($b64))
           $expected = (Get-Content "source/source.sha256" -Raw).Trim().ToLowerInvariant()
           $actual = (Get-FileHash "FactionOverhaul-core-source.zip" -Algorithm SHA256).Hash.ToLowerInvariant()
@@ -63,7 +61,7 @@ jobs:
         shell: pwsh
         run: |
           $v = Get-Content "project/version.json" -Raw | ConvertFrom-Json
-          $base = "https://raw.githubusercontent.com/\${{ github.repository }}/main/releases"
+          $base = "https://raw.githubusercontent.com/$env:GITHUB_REPOSITORY/main/releases"
           & "project/tools/PUBLISH_ALL.ps1" -ModVersion ([string]$v.modVersion) -LauncherVersion ([string]$v.launcherVersion) -BaseUrl $base -OutputDir "../release-out" -ModNotes "Automatic Faction Overhaul runtime update" -LauncherNotes "Automatic Faction Overhaul launcher update"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
