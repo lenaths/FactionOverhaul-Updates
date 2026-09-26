@@ -1,0 +1,14 @@
+name: Runner smoke test
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "source/SMOKE"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test runner
+        run: echo "runner-ok"
