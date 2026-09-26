@@ -1,0 +1,95 @@
+name: Build and publish Faction Overhaul
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "source/READY"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: faction-overhaul-publish
+  cancel-in-progress: false
+
+jobs:
+  build-publish:
+    runs-on: windows-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout update repository
+        uses: actions/checkout@v4
+
+      - name: Reconstruct source archive
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $parts = Get-ChildItem "source/parts/part-*.b64" | Sort-Object Name
+          if ($parts.Count -eq 0) { throw "No source parts found." }
+          $b64 = ($parts | ForEach-Object { Get-Content $_.FullName -Raw }) -join ""
+          [IO.File]::WriteAllBytes("FactionOverhaul-core-source.zip", [Convert]::FromBase64String($b64))
+          $expected = (Get-Content "source/source.sha256" -Raw).Trim().ToLowerInvariant()
+          $actual = (Get-FileHash "FactionOverhaul-core-source.zip" -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($actual -ne $expected) { throw "Source archive SHA256 mismatch: expected $expected, got $actual" }
+          Expand-Archive "FactionOverhaul-core-source.zip" -DestinationPath "project" -Force
+          New-Item -ItemType Directory -Path "project/assets" -Force | Out-Null
+
+      - name: Restore pinned third-party dependencies
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          New-Item -ItemType Directory -Path "project/third_party" -Force | Out-Null
+          git clone --depth 1 --branch v1.91.8 https://github.com/ocornut/imgui.git project/third_party/imgui
+          git clone --depth 1 --branch v1.3.4 https://github.com/TsudaKageyu/minhook.git project/third_party/minhook
+          New-Item -ItemType Directory -Path "project/third_party/json" -Force | Out-Null
+          Invoke-WebRequest "https://raw.githubusercontent.com/nlohmann/json/v3.11.3/single_include/nlohmann/json.hpp" -OutFile "project/third_party/json/json.hpp"
+
+      - name: Configure Win32
+        shell: pwsh
+        run: |
+          cmake -S project -B project/build -A Win32 -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DBUILD_TESTING=OFF
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Build launcher and runtime
+        shell: pwsh
+        run: |
+          cmake --build project/build --config Release --target AC4FactionOverhaul AC4FactionOverhaulInjector FactionOverhaulLauncher FactionOverhaulUpdater --parallel 4
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Package launcher and runtime
+        shell: pwsh
+        run: |
+          $v = Get-Content "project/version.json" -Raw | ConvertFrom-Json
+          $base = "https://raw.githubusercontent.com/\${{ github.repository }}/main/releases"
+          & "project/tools/PUBLISH_ALL.ps1" -ModVersion ([string]$v.modVersion) -LauncherVersion ([string]$v.launcherVersion) -BaseUrl $base -OutputDir "../release-out" -ModNotes "Automatic Faction Overhaul runtime update" -LauncherNotes "Automatic Faction Overhaul launcher update"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Publish generated update channel
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          New-Item -ItemType Directory -Path "releases" -Force | Out-Null
+          Copy-Item "release-out/FactionOverhaulLauncher-*.zip" "releases/" -Force
+          Copy-Item "release-out/FactionOverhaulRuntime-*.zip" "releases/" -Force
+          Copy-Item "release-out/update.json" "update.json" -Force
+
+          $v = Get-Content "project/version.json" -Raw | ConvertFrom-Json
+          @(
+            "launcherVersion=$($v.launcherVersion)",
+            "modVersion=$($v.modVersion)",
+            "sourceSha256=$((Get-Content 'source/source.sha256' -Raw).Trim())",
+            "builtUtc=$([DateTime]::UtcNow.ToString('yyyy-MM-ddTHH:mm:ssZ'))"
+          ) | Set-Content "releases/latest.txt" -Encoding UTF8
+
+          git config user.name "Faction Overhaul Update Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add update.json releases
+          if (git diff --cached --quiet) {
+            Write-Host "No generated release changes."
+            exit 0
+          }
+          git commit -m "Publish launcher $($v.launcherVersion) / runtime $($v.modVersion)"
+          git push
