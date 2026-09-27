@@ -1,0 +1,30 @@
+AC4 Faction Overhaul - development status
+Date: 2026-09-27 05:47 Europe/Brussels
+
+BASELINE PRESERVED
+Launcher: 1.2.0
+Runtime: 0.10.0
+Source SHA256: a3ac301d8cd36a0043baba6d246d831ac4ba9e7a4d4edfc515b901d5127b7ad9
+Previous development commit: 454a2f2ecea4bda5c12f0b369cdbf3c6e80d3b67
+
+THIS ITERATION
+- Re-inspected main and the complete repository tree before changing anything.
+- Re-read the actual build-publish workflow and READY/version metadata.
+- Verified the publication workflow is fail-safe at the channel level: update.json is still absent, therefore an unbuilt release cannot be advertised to installed launchers.
+- Verified third-party dependencies remain pinned by the workflow: Dear ImGui v1.91.8, MinHook v1.3.4, nlohmann/json v3.11.3.
+- Re-checked GitHub Actions history directly. There are still exactly two historical runs: the initial Windows build and the independent runner smoke test; both failed within seconds and no newer runner execution exists.
+- Preserved all validated AC4 runtime/carrier work and did not alter gameplay mappings without runtime evidence.
+
+VALIDATION
+Repository main inspection: PASS
+Source/READY version consistency: PASS (launcher 1.2.0 / runtime 0.10.0)
+Source checksum metadata: PASS
+Unsafe update.json promotion: NONE
+Release ZIP promotion: NONE
+New actionable compiler diagnostics: NONE
+
+BLOCKER
+GitHub-hosted Actions still has no successful runner execution for this repository. Because both a minimal smoke test and the Windows build fail before useful project steps, changing AC4 source blindly would create regression risk rather than real progress.
+
+NEXT SAFE DEVELOPMENT TARGET
+When runner execution becomes available, build the unchanged baseline first. Then add the publication integrity gate (ZIP SHA-256 vs update.json + per-release TXT changelog) before promoting any new launcher/runtime version. Gameplay/runtime work remains on the validated V4.1-style catalog-safe Brute axe carrier baseline; static ActionMap-output remapping is not to be retried as a solution.
