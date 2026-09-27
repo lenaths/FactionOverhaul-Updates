@@ -45,6 +45,23 @@ jobs:
           New-Item -ItemType Directory -Path "project/third_party/json" -Force | Out-Null
           Invoke-WebRequest "https://raw.githubusercontent.com/nlohmann/json/v3.11.3/single_include/nlohmann/json.hpp" -OutFile "project/third_party/json/json.hpp"
 
+      - name: Apply pinned ImGui Win32 compatibility declaration
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $path = "project/src/Launcher/main.cpp"
+          $src = Get-Content $path -Raw
+          if ($src -notmatch "ImGui_ImplWin32_WndProcHandler\s*\(") {
+            throw "Launcher no longer references ImGui_ImplWin32_WndProcHandler; compatibility patch must be reviewed."
+          }
+          if ($src -notmatch "extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler") {
+            $anchor = '#include "imgui_impl_win32.h"'
+            if (-not $src.Contains($anchor)) { throw "Expected imgui_impl_win32.h include not found." }
+            $decl = $anchor + [Environment]::NewLine + 'extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);'
+            $src = $src.Replace($anchor, $decl)
+            Set-Content $path $src -Encoding UTF8 -NoNewline
+          }
+
       - name: Configure Win32
         shell: pwsh
         run: |
