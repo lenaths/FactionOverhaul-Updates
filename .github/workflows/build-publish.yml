@@ -48,7 +48,7 @@ jobs:
       - name: Configure Win32
         shell: pwsh
         run: |
-          cmake -S project -B project/build -A Win32 -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DBUILD_TESTING=OFF
+          cmake -S project -B project/build -A Win32 "-DCMAKE_POLICY_VERSION_MINIMUM=3.5" -DBUILD_TESTING=OFF
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Build launcher and runtime
