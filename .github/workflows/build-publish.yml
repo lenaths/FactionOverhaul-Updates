@@ -65,6 +65,12 @@ jobs:
           & "project/tools/PUBLISH_ALL.ps1" -ModVersion ([string]$v.modVersion) -LauncherVersion ([string]$v.launcherVersion) -BaseUrl $base -OutputDir "../release-out" -ModNotes "Automatic Faction Overhaul runtime update" -LauncherNotes "Automatic Faction Overhaul launcher update"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
+      - name: Validate generated release
+        shell: pwsh
+        run: |
+          & "./tools/Validate-Release.ps1" -ReleaseOut "release-out" -VersionFile "project/version.json"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
       - name: Publish generated update channel
         shell: pwsh
         run: |
@@ -73,6 +79,21 @@ jobs:
           Copy-Item "release-out/FactionOverhaulLauncher-*.zip" "releases/" -Force
           Copy-Item "release-out/FactionOverhaulRuntime-*.zip" "releases/" -Force
           Copy-Item "release-out/update.json" "update.json" -Force
+
+          $validation = Get-Content "release-out/validation.json" -Raw | ConvertFrom-Json
+          New-Item -ItemType Directory -Path "changelogs" -Force | Out-Null
+          @(
+            "AC4 Faction Overhaul release",
+            "Launcher: $($validation.launcherVersion)",
+            "Runtime: $($validation.modVersion)",
+            "Launcher archive: $($validation.launcherFile)",
+            "Launcher SHA-256: $($validation.launcherSha256)",
+            "Runtime archive: $($validation.runtimeFile)",
+            "Runtime SHA-256: $($validation.runtimeSha256)",
+            "Validation: PASS (package count, versions, filenames, SHA-256 and update.json coherence)",
+            "Build: GitHub Actions windows-latest / Release / Win32",
+            "Known limitation: in-game behavior still requires a later AC4 playtest; this release gate only promotes successfully built and internally coherent packages."
+          ) | Set-Content "changelogs/launcher-$($validation.launcherVersion)_runtime-$($validation.modVersion).txt" -Encoding UTF8
 
           $v = Get-Content "project/version.json" -Raw | ConvertFrom-Json
           @(
@@ -84,7 +105,7 @@ jobs:
 
           git config user.name "Faction Overhaul Update Bot"
           git config user.email "actions@users.noreply.github.com"
-          git add update.json releases
+          git add update.json releases changelogs
           if (git diff --cached --quiet) {
             Write-Host "No generated release changes."
             exit 0
