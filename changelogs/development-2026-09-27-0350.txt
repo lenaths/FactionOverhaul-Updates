@@ -1,0 +1,28 @@
+AC4 Faction Overhaul - development status
+Date: 2026-09-27
+
+BASELINE PRESERVED
+Launcher: 1.2.0
+Runtime: 0.10.0
+Source SHA256: a3ac301d8cd36a0043baba6d246d831ac4ba9e7a4d4edfc515b901d5127b7ad9
+
+THIS ITERATION
+- Re-inspected the repository before making changes.
+- Confirmed the source archive, source checksum, READY marker and Windows publication workflow are still present.
+- Confirmed no update.json or release package has been promoted, so clients cannot receive an incomplete release.
+- Designed an integrity gate for future publication: recompute launcher/runtime SHA-256 and compare them with update.json before promotion.
+- Designed automatic per-release TXT changelog naming: changelogs/launcher-V_runtime-V.txt.
+- Preserved the validated AC4 runtime baseline; no gameplay data or carrier mapping was replaced.
+
+VALIDATION
+Repository state inspection: PASS
+Source checksum metadata present: PASS
+Existing release promotion: NONE
+Latest Windows build workflow: BLOCKED before useful build logs
+Runner smoke test: BLOCKED before useful step logs
+
+LIMITATION
+The GitHub connector safety layer rejected the workflow-file modification in this run. The existing workflow and functional source were left untouched. No version was incremented and no false release was published.
+
+NEXT SAFE STEP
+Apply the integrity/changelog gate once workflow-file writing is accepted, then trigger the Windows build. Only after a successful build should update.json and ZIP packages be promoted.
