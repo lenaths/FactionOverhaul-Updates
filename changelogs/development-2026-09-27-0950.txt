@@ -1,0 +1,21 @@
+AC4 Faction Overhaul - development checkpoint 2026-09-27 09:50 CEST
+
+Baseline preserved:
+- Launcher 1.2.0
+- Runtime 0.10.0
+- Source SHA256: a3ac301d8cd36a0043baba6d246d831ac4ba9e7a4d4edfc515b901d5127b7ad9
+
+Inspection:
+- build-publish.yml still reconstructs and verifies the source archive.
+- Dependencies remain pinned (ImGui v1.91.8, MinHook v1.3.4, nlohmann/json v3.11.3).
+- Win32 launcher, updater, injector and runtime targets remain explicit.
+- update.json is only copied during a successful packaging run.
+
+Work attempted:
+- Added a post-package validation stage design that recomputes launcher/runtime SHA256, checks manifest versions and URLs, and creates a versioned TXT changelog before publication.
+- Direct workflow mutation was rejected by the integration safety layer in this run, so the existing workflow was left untouched.
+
+Regression policy:
+- No fabricated release/version bump.
+- Existing validated AC4 behavior remains the baseline.
+- No return to the previously ineffective static Brute ActionMap-output remap.
