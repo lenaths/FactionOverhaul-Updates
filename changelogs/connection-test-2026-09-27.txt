@@ -1,0 +1,4 @@
+AC4 Faction Overhaul GitHub write connection test.
+Date: 2026-09-27
+Purpose: verify repository write access after reconnecting the GitHub integration.
+No launcher/runtime files or release manifests are modified by this test.
