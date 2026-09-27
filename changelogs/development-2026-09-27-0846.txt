@@ -1,0 +1,24 @@
+Faction Overhaul development checkpoint
+Date: 2026-09-27 08:46 Europe/Brussels
+Baseline: Launcher 1.2.0 / Runtime 0.10.0
+Main before checkpoint: 8e4f870d97d0645c6db5ffdbb849571c9c965ef4
+
+INSPECTION
+- Existing source bundle, source SHA256, READY trigger and build-publish workflow are still present.
+- update.json and release ZIPs are intentionally absent: no unverified release has been promoted.
+- GitHub Actions history still contains only the initial Windows build and independent runner smoke test; both failed before useful project compilation diagnostics were exposed.
+- Current workflow already performs source SHA256 verification, pinned dependency restoration, Win32 configure/build, packaging and generated-channel commit.
+
+REGRESSION GUARDS
+- Do not alter the validated British Agile visual swap.
+- Keep the Brute V4.1 catalog-safe British Cutlasses carrier: selectable inventory + visible Brute axe.
+- Do not restore the V5.1 static ActionMap-output remap; it did not activate Brute stance/Heavy/Special/knockdown.
+- Keep Agile and Brute carriers independent.
+
+NEXT SAFE CODE CHANGE
+- Harden the publish phase after a successful runner build: require exactly one launcher ZIP and one runtime ZIP, recompute SHA256 after final copy, validate update.json versions/URLs/hashes against those exact files, then generate a versioned changelog before git push.
+- Only after those checks pass may update.json be promoted.
+
+RESULT
+- No version bump and no release publication in this checkpoint because there is still no verified Windows build output.
+- Baseline remains fail-closed and unchanged.
