@@ -55,10 +55,81 @@ jobs:
             throw "Launcher no longer references ImGui_ImplWin32_WndProcHandler; compatibility patch must be reviewed."
           }
           if ($src -notmatch "extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler") {
-            $anchor = '#include "imgui_impl_win32.h"'
-            if (-not $src.Contains($anchor)) { throw "Expected imgui_impl_win32.h include not found." }
-            $decl = $anchor + [Environment]::NewLine + 'extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);'
-            $src = $src.Replace($anchor, $decl)
+            $anchorPattern = '(?m)^(\s*#include\s+[<"][^>"]*imgui_impl_win32\.h[>"]\s*)
+            Set-Content $path $src -Encoding UTF8 -NoNewline
+          }
+
+      - name: Configure Win32
+        shell: pwsh
+        run: |
+          cmake -S project -B project/build -A Win32 "-DCMAKE_POLICY_VERSION_MINIMUM=3.5" -DBUILD_TESTING=OFF
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Build launcher and runtime
+        shell: pwsh
+        run: |
+          cmake --build project/build --config Release --target AC4FactionOverhaul AC4FactionOverhaulInjector FactionOverhaulLauncher FactionOverhaulUpdater --parallel 4
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Package launcher and runtime
+        shell: pwsh
+        run: |
+          $v = Get-Content "project/version.json" -Raw | ConvertFrom-Json
+          $base = "https://raw.githubusercontent.com/$env:GITHUB_REPOSITORY/main/releases"
+          & "project/tools/PUBLISH_ALL.ps1" -ModVersion ([string]$v.modVersion) -LauncherVersion ([string]$v.launcherVersion) -BaseUrl $base -OutputDir "../release-out" -ModNotes "Automatic Faction Overhaul runtime update" -LauncherNotes "Automatic Faction Overhaul launcher update"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Validate generated release
+        shell: pwsh
+        run: |
+          & "./tools/Validate-Release.ps1" -ReleaseOut "release-out" -VersionFile "project/version.json"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Publish generated update channel
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          New-Item -ItemType Directory -Path "releases" -Force | Out-Null
+          Copy-Item "release-out/FactionOverhaulLauncher-*.zip" "releases/" -Force
+          Copy-Item "release-out/FactionOverhaulRuntime-*.zip" "releases/" -Force
+          Copy-Item "release-out/update.json" "update.json" -Force
+
+          $validation = Get-Content "release-out/validation.json" -Raw | ConvertFrom-Json
+          New-Item -ItemType Directory -Path "changelogs" -Force | Out-Null
+          @(
+            "AC4 Faction Overhaul release",
+            "Launcher: $($validation.launcherVersion)",
+            "Runtime: $($validation.modVersion)",
+            "Launcher archive: $($validation.launcherFile)",
+            "Launcher SHA-256: $($validation.launcherSha256)",
+            "Runtime archive: $($validation.runtimeFile)",
+            "Runtime SHA-256: $($validation.runtimeSha256)",
+            "Validation: PASS (package count, versions, filenames, SHA-256 and update.json coherence)",
+            "Build: GitHub Actions windows-latest / Release / Win32",
+            "Known limitation: in-game behavior still requires a later AC4 playtest; this release gate only promotes successfully built and internally coherent packages."
+          ) | Set-Content "changelogs/launcher-$($validation.launcherVersion)_runtime-$($validation.modVersion).txt" -Encoding UTF8
+
+          $v = Get-Content "project/version.json" -Raw | ConvertFrom-Json
+          @(
+            "launcherVersion=$($v.launcherVersion)",
+            "modVersion=$($v.modVersion)",
+            "sourceSha256=$((Get-Content 'source/source.sha256' -Raw).Trim())",
+            "builtUtc=$([DateTime]::UtcNow.ToString('yyyy-MM-ddTHH:mm:ssZ'))"
+          ) | Set-Content "releases/latest.txt" -Encoding UTF8
+
+          git config user.name "Faction Overhaul Update Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add update.json releases changelogs
+          if (git diff --cached --quiet) {
+            Write-Host "No generated release changes."
+            exit 0
+          }
+          git commit -m "Publish launcher $($v.launcherVersion) / runtime $($v.modVersion)"
+          git push
+
+            if ($src -notmatch $anchorPattern) { throw "Expected imgui_impl_win32.h include not found." }
+            $declaration = '$1' + [Environment]::NewLine + 'extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);'
+            $src = [regex]::Replace($src, $anchorPattern, $declaration, 1)
             Set-Content $path $src -Encoding UTF8 -NoNewline
           }
 
