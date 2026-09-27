@@ -51,11 +51,13 @@ jobs:
           $ErrorActionPreference = "Stop"
           $path = "project/src/Launcher/main.cpp"
           $src = Get-Content $path -Raw
-          if ($src -notmatch "ImGui_ImplWin32_WndProcHandler\s*\(") {
-            throw "Launcher no longer references ImGui_ImplWin32_WndProcHandler; compatibility patch must be reviewed."
-          }
+          if ($src -notmatch "ImGui_ImplWin32_WndProcHandler") { throw "Expected ImGui handler reference not found." }
           if ($src -notmatch "extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler") {
-            $anchorPattern = '(?m)^(\s*#include\s+[<"][^>"]*imgui_impl_win32\.h[>"]\s*)
+            $needle = "LRESULT CALLBACK WndProc"
+            $pos = $src.IndexOf($needle)
+            if ($pos -lt 0) { throw "Expected WndProc definition not found." }
+            $decl = "extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);" + [Environment]::NewLine + [Environment]::NewLine
+            $src = $src.Insert($pos, $decl)
             Set-Content $path $src -Encoding UTF8 -NoNewline
           }
 
