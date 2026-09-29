@@ -13,9 +13,9 @@ namespace ac4fo::launcher {
 namespace fs = std::filesystem;
 
 namespace {
-constexpr ImVec4 kBg{0.025f,0.055f,0.073f,1.0f};
-constexpr ImVec4 kPanel{0.035f,0.082f,0.105f,0.98f};
-constexpr ImVec4 kPanel2{0.027f,0.066f,0.088f,0.98f};
+constexpr ImVec4 kBg{0.025f,0.055f,0.073f,0.0f};
+constexpr ImVec4 kPanel{0.020f,0.045f,0.060f,0.90f};
+constexpr ImVec4 kPanel2{0.018f,0.040f,0.055f,0.88f};
 constexpr ImVec4 kGold{0.80f,0.68f,0.48f,1.0f};
 constexpr ImVec4 kGoldDim{0.53f,0.43f,0.29f,1.0f};
 constexpr ImVec4 kText{0.88f,0.86f,0.79f,1.0f};
