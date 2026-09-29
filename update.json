@@ -1,20 +1,20 @@
 {
-  "launcher": {
-    "notes": "Launcher 1.2.2: updater is bundled with the launcher; GitHub stable update channel retained; visual assets are bundled when present",
-    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulLauncher-1.2.2.zip",
-    "publishedUtc": "2026-09-29T16:45:46Z",
-    "sha256": "6709ad8096b2493123eb9b68c1f2183a327aa256a63f3632a6e858531fd94752",
-    "version": "1.2.2"
-  },
-  "channel": "stable",
+  "publishedUtc": "2026-09-29T16:52:40Z",
   "schemaVersion": 2,
   "runtime": {
-    "notes": "Automatic Faction Overhaul runtime update",
-    "sha256": "988e041ed3182ef81c27d5ff40646961215b64c5e3e5c6220c440c7504303aee",
-    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulRuntime-0.10.0.zip",
-    "publishedUtc": "2026-09-29T16:45:46Z",
     "version": "0.10.0",
-    "minimumLauncherVersion": "1.2.2"
+    "minimumLauncherVersion": "1.2.3",
+    "notes": "Automatic Faction Overhaul runtime update",
+    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulRuntime-0.10.0.zip",
+    "publishedUtc": "2026-09-29T16:52:40Z",
+    "sha256": "d8d9c9f951576f7655ce25bd5cce22c4b713f2d353ec19fdcfb8e86a74141cda"
   },
-  "publishedUtc": "2026-09-29T16:45:46Z"
+  "channel": "stable",
+  "launcher": {
+    "version": "1.2.3",
+    "sha256": "be5d7fd461b4f1cf4c3aeec9704424aae382ddb0a18ff0eec3537f74c5b8e463",
+    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulLauncher-1.2.3.zip",
+    "publishedUtc": "2026-09-29T16:52:40Z",
+    "notes": "Launcher 1.2.3: updater is bundled with the launcher; GitHub stable update channel retained; visual assets are bundled when present"
+  }
 }
