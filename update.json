@@ -1,0 +1,20 @@
+{
+  "launcher": {
+    "notes": "Automatic Faction Overhaul launcher update",
+    "version": "1.2.0",
+    "publishedUtc": "2026-09-29T16:10:02Z",
+    "sha256": "8d0e174660f33bbcb934c3a19c41fd124eb65df65f70e590c88f4ad2f439f569",
+    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulLauncher-1.2.0.zip"
+  },
+  "channel": "stable",
+  "runtime": {
+    "notes": "Automatic Faction Overhaul runtime update",
+    "publishedUtc": "2026-09-29T16:10:02Z",
+    "sha256": "6905258ff98f05d3fd891b6dd8e0a17370fe9db68e7d379e44ac120a96e25341",
+    "version": "0.10.0",
+    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulRuntime-0.10.0.zip",
+    "minimumLauncherVersion": "1.2.0"
+  },
+  "publishedUtc": "2026-09-29T16:10:02Z",
+  "schemaVersion": 2
+}

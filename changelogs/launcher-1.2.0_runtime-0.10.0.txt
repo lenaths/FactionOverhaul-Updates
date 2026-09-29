@@ -1,0 +1,10 @@
+AC4 Faction Overhaul release
+Launcher: 1.2.0
+Runtime: 0.10.0
+Launcher archive: FactionOverhaulLauncher-1.2.0.zip
+Launcher SHA-256: 8d0e174660f33bbcb934c3a19c41fd124eb65df65f70e590c88f4ad2f439f569
+Runtime archive: FactionOverhaulRuntime-0.10.0.zip
+Runtime SHA-256: 6905258ff98f05d3fd891b6dd8e0a17370fe9db68e7d379e44ac120a96e25341
+Validation: PASS (package count, versions, filenames, SHA-256 and update.json coherence)
+Build: GitHub Actions windows-latest / Release / Win32
+Known limitation: in-game behavior still requires a later AC4 playtest; this release gate only promotes successfully built and internally coherent packages.
