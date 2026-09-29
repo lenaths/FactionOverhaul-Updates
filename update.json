@@ -1,20 +1,20 @@
 {
-  "publishedUtc": "2026-09-29T17:42:00Z",
-  "runtime": {
-    "notes": "Automatic Faction Overhaul runtime update",
-    "sha256": "6fce0b2df8aa1dd577d500371a363525d70c99aa83538d30dc7b88ec3f8968bf",
-    "publishedUtc": "2026-09-29T17:42:00Z",
-    "version": "0.10.0",
-    "minimumLauncherVersion": "1.2.6",
-    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulRuntime-0.10.0.zip"
-  },
-  "launcher": {
-    "publishedUtc": "2026-09-29T17:42:00Z",
-    "sha256": "765a63d9d2027a4c9a28ac83d58c994d131e0aae7c17d7ca03acb69e7d336d60",
-    "version": "1.2.6",
-    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulLauncher-1.2.6.zip",
-    "notes": "Launcher 1.2.6: cinematic Black Flag launcher composition, visible full-window background, translucent gold-trimmed panels and stable auto-update"
-  },
+  "publishedUtc": "2026-09-29T21:16:38Z",
+  "schemaVersion": 2,
   "channel": "stable",
-  "schemaVersion": 2
+  "launcher": {
+    "notes": "Launcher 1.2.7: root window transparency fix so packaged DirectX background remains visible behind the UI",
+    "version": "1.2.7",
+    "publishedUtc": "2026-09-29T21:16:38Z",
+    "sha256": "331a86564667f0262f7b7a81616d3a280114d5292151cec35aa55f4b4f8c793b",
+    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulLauncher-1.2.7.zip"
+  },
+  "runtime": {
+    "version": "0.10.0",
+    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulRuntime-0.10.0.zip",
+    "notes": "Automatic Faction Overhaul runtime update",
+    "minimumLauncherVersion": "1.2.7",
+    "publishedUtc": "2026-09-29T21:16:38Z",
+    "sha256": "c4367ade4e67f760976bdc678f06ec1eca5fc0a5f6685b66c135c2166a614cff"
+  }
 }
