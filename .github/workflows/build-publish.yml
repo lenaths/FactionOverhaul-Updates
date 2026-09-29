@@ -81,6 +81,14 @@ jobs:
             Set-Content $path $src -Encoding UTF8 -NoNewline
           }
 
+      - name: Export launcher maintenance sources
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path "maintenance-source" | Out-Null
+          Copy-Item "project/src/Launcher/self_update_service.cpp" "maintenance-source/self_update_service.cpp" -Force
+          Copy-Item "project/src/Launcher/updater_main.cpp" "maintenance-source/updater_main.cpp" -Force
+          Copy-Item "project/src/Launcher/self_update_service.h" "maintenance-source/self_update_service.h" -Force
+
       - name: Configure Win32
         shell: pwsh
         run: |
@@ -186,7 +194,7 @@ jobs:
 
           git config user.name "Faction Overhaul Update Bot"
           git config user.email "actions@users.noreply.github.com"
-          git add update.json releases changelogs
+          git add update.json releases changelogs maintenance-source
           if (git diff --cached --quiet) {
             Write-Host "No generated release changes."
             exit 0
