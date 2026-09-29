@@ -137,7 +137,7 @@ jobs:
         run: |
           $v = Get-Content "project/version.json" -Raw | ConvertFrom-Json
           $base = "https://raw.githubusercontent.com/$env:GITHUB_REPOSITORY/main/releases"
-          & "project/tools/PUBLISH_ALL.ps1" -ModVersion ([string]$v.modVersion) -LauncherVersion ([string]$v.launcherVersion) -BaseUrl $base -OutputDir "../release-out" -ModNotes "Automatic Faction Overhaul runtime update" -LauncherNotes "Launcher 1.2.4: cinematic nautical UI restoration, richer background framing and selected-profile presentation; updater and GitHub stable channel retained
+          & "project/tools/PUBLISH_ALL.ps1" -ModVersion ([string]$v.modVersion) -LauncherVersion ([string]$v.launcherVersion) -BaseUrl $base -OutputDir "../release-out" -ModNotes "Automatic Faction Overhaul runtime update" -LauncherNotes "Launcher 1.2.4: cinematic nautical UI restoration, richer background framing and selected-profile presentation; updater and GitHub stable channel retained"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Complete launcher package assets and updater
