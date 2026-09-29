@@ -1,20 +1,20 @@
 {
-  "publishedUtc": "2026-09-29T16:17:30Z",
-  "schemaVersion": 2,
+  "channel": "stable",
   "runtime": {
-    "minimumLauncherVersion": "1.2.1",
-    "sha256": "f7b0a13d3d83d84e46cd81926dacdbf6b697913937ac8216b244656af71b508b",
-    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulRuntime-0.10.0.zip",
+    "publishedUtc": "2026-09-29T16:33:04Z",
     "version": "0.10.0",
+    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulRuntime-0.10.0.zip",
     "notes": "Automatic Faction Overhaul runtime update",
-    "publishedUtc": "2026-09-29T16:17:30Z"
+    "minimumLauncherVersion": "1.2.2",
+    "sha256": "244f995f31035747a4caa9336e9ef843fdbb15320cbe2815ca5f057ed9b00077"
   },
+  "publishedUtc": "2026-09-29T16:33:04Z",
   "launcher": {
-    "publishedUtc": "2026-09-29T16:17:30Z",
-    "sha256": "57c99322ade9898d3d1818addcdb1ff9d3ef0eadd0d70e2656583f2c73c1ef3e",
-    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulLauncher-1.2.1.zip",
-    "notes": "Launcher 1.2.1: update channel migrated from updates.xntservers.com to GitHub stable manifest to prevent WinHTTP 12002 timeouts",
-    "version": "1.2.1"
+    "publishedUtc": "2026-09-29T16:33:04Z",
+    "sha256": "698a82cf423b90df2caff5460f48d139a3a498edcaba93542725b613a4f2b733",
+    "notes": "Launcher 1.2.2: updater is bundled with the launcher; GitHub stable update channel retained; visual assets are bundled when present",
+    "version": "1.2.2",
+    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulLauncher-1.2.2.zip"
   },
-  "channel": "stable"
+  "schemaVersion": 2
 }
