@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - "source/READY"
+      - ".github/workflows/build-publish.yml"
 
 permissions:
   contents: write
