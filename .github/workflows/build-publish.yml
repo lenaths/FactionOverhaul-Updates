@@ -89,6 +89,10 @@ jobs:
           Copy-Item "project/src/Launcher/self_update_service.cpp" "maintenance-source/self_update_service.cpp" -Force
           Copy-Item "project/src/Launcher/updater_main.cpp" "maintenance-source/updater_main.cpp" -Force
           Copy-Item "project/src/Launcher/self_update_service.h" "maintenance-source/self_update_service.h" -Force
+          Copy-Item "project/src/Launcher/launcher_app.cpp" "maintenance-source/launcher_app.cpp" -Force
+          Copy-Item "project/src/Launcher/launcher_app.h" "maintenance-source/launcher_app.h" -Force
+          Copy-Item "project/src/Launcher/launcher_types.h" "maintenance-source/launcher_types.h" -Force
+          Copy-Item "project/src/Launcher/main.cpp" "maintenance-source/main.cpp" -Force
 
       - name: Synchronize compiled launcher version
         shell: pwsh
