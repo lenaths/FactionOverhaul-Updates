@@ -7,6 +7,7 @@ extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam
 #include <dwmapi.h>
 #include <wincodec.h>
 #include <filesystem>
+#include <vector>
 #include <imgui.h>
 #include <backends/imgui_impl_win32.h>
 #include <backends/imgui_impl_dx11.h>
