@@ -1,4 +1,4 @@
-launcherVersion=1.2.5
+launcherVersion=1.2.6
 modVersion=0.10.0
 sourceSha256=a3ac301d8cd36a0043baba6d246d831ac4ba9e7a4d4edfc515b901d5127b7ad9
-builtUtc=2026-09-29T17:26:12Z
+builtUtc=2026-09-29T17:42:03Z

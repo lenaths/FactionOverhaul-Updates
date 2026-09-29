@@ -1,20 +1,20 @@
 {
-  "schemaVersion": 2,
+  "publishedUtc": "2026-09-29T17:42:00Z",
+  "runtime": {
+    "notes": "Automatic Faction Overhaul runtime update",
+    "sha256": "6fce0b2df8aa1dd577d500371a363525d70c99aa83538d30dc7b88ec3f8968bf",
+    "publishedUtc": "2026-09-29T17:42:00Z",
+    "version": "0.10.0",
+    "minimumLauncherVersion": "1.2.6",
+    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulRuntime-0.10.0.zip"
+  },
   "launcher": {
-    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulLauncher-1.2.5.zip",
-    "version": "1.2.5",
-    "notes": "Launcher 1.2.5: real DirectX 11 background texture system, packaged nautical background asset, translucent UI layering and stable auto-update",
-    "sha256": "c7fb8d84f2926a06c0691a6a3e66fd996b0bbbf29e2bc3e4e2389f8c58ce7b5f",
-    "publishedUtc": "2026-09-29T17:26:10Z"
+    "publishedUtc": "2026-09-29T17:42:00Z",
+    "sha256": "765a63d9d2027a4c9a28ac83d58c994d131e0aae7c17d7ca03acb69e7d336d60",
+    "version": "1.2.6",
+    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulLauncher-1.2.6.zip",
+    "notes": "Launcher 1.2.6: cinematic Black Flag launcher composition, visible full-window background, translucent gold-trimmed panels and stable auto-update"
   },
   "channel": "stable",
-  "publishedUtc": "2026-09-29T17:26:10Z",
-  "runtime": {
-    "version": "0.10.0",
-    "sha256": "1ece86ccf502091f5e78c329cf84e23510b4d7b89911b6c18392b096ef8b83bb",
-    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulRuntime-0.10.0.zip",
-    "publishedUtc": "2026-09-29T17:26:10Z",
-    "minimumLauncherVersion": "1.2.5",
-    "notes": "Automatic Faction Overhaul runtime update"
-  }
+  "schemaVersion": 2
 }
