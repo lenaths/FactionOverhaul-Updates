@@ -2,9 +2,9 @@ AC4 Faction Overhaul release
 Launcher: 1.2.3
 Runtime: 0.10.0
 Launcher archive: FactionOverhaulLauncher-1.2.3.zip
-Launcher SHA-256: be5d7fd461b4f1cf4c3aeec9704424aae382ddb0a18ff0eec3537f74c5b8e463
+Launcher SHA-256: 31b4acf735aab4304c23e89e9fd70a0402f81f2c31fdbc719f10741c4b7b1222
 Runtime archive: FactionOverhaulRuntime-0.10.0.zip
-Runtime SHA-256: d8d9c9f951576f7655ce25bd5cce22c4b713f2d353ec19fdcfb8e86a74141cda
+Runtime SHA-256: aeedb4e181412242ec95b625bad3e72ded1bcbb32411d0e1641d026759d5a024
 Validation: PASS (package count, versions, filenames, SHA-256 and update.json coherence)
 Build: GitHub Actions windows-latest / Release / Win32
 Launcher fix: FactionOverhaulUpdater.exe is now mandatory in the launcher package; available visual assets are copied into the package; GitHub stable update channel retained.
