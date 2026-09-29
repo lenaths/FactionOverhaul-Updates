@@ -74,7 +74,8 @@ void LauncherApp::Log(const std::string& message,const char* level){
     {
         std::scoped_lock lock(logsMutex_);logs_.push_back(line);if(logs_.size()>500)logs_.erase(logs_.begin(),logs_.begin()+100);
     }
-    try{fs::create_directories(launcherDir_/"logs");std::ofstream out(launcherDir_/"logs/launcher.log",std::ios::app);out<<line<<"\n";}catch(...){}
+    try{fs::create_directories(launcherDir_/"logs");std::ofstream out(launcherDir_/"logs/launcher.log",std::ios::app);out<<line<<"
+";}catch(...){}
 }
 
 void LauncherApp::RefreshEnvironment(){
@@ -135,7 +136,11 @@ void LauncherApp::StatusCard(const char* title,const std::string& value,const st
 
 void LauncherApp::DrawHeader(){
     auto* dl=ImGui::GetWindowDrawList();const ImVec2 p=ImGui::GetWindowPos();const float w=ImGui::GetWindowWidth();
-    const ImU32 sea0=IM_COL32(7,18,25,255), sea1=IM_COL32(10,35,43,255);\n    dl->AddRectFilledMultiColor(p,ImVec2(p.x+w,p.y+170),sea0,sea0,sea1,sea1);\n    for(int i=0;i<9;i++){float x=p.x+45.0f+i*(w-90.0f)/8.0f;dl->AddLine(ImVec2(x,p.y+8),ImVec2(x-70,p.y+164),IM_COL32(169,139,83,18),1.0f);}\n    dl->AddLine(ImVec2(p.x+18,p.y+156),ImVec2(p.x+w-18,p.y+156),IM_COL32(190,154,92,120),1.0f);\n    const float y=p.y+78.0f;
+    const ImU32 sea0=IM_COL32(7,18,25,255), sea1=IM_COL32(10,35,43,255);
+    dl->AddRectFilledMultiColor(p,ImVec2(p.x+w,p.y+170),sea0,sea0,sea1,sea1);
+    for(int i=0;i<9;i++){float x=p.x+45.0f+i*(w-90.0f)/8.0f;dl->AddLine(ImVec2(x,p.y+8),ImVec2(x-70,p.y+164),IM_COL32(169,139,83,18),1.0f);}
+    dl->AddLine(ImVec2(p.x+18,p.y+156),ImVec2(p.x+w-18,p.y+156),IM_COL32(190,154,92,120),1.0f);
+    const float y=p.y+78.0f;
     DrawCompass(dl,ImVec2(p.x+w*.50f,y+2),58.0f);
     const char* title="FACTION OVERHAUL";const ImVec2 ts=ImGui::CalcTextSize(title);
     const float titleX=p.x+w*.5f-ts.x*1.30f;
@@ -229,7 +234,8 @@ void LauncherApp::DrawRightProfile(float width){
     SectionLabel("SELECTED PROFILE");ImGui::SameLine();ImGui::PushStyleColor(ImGuiCol_Text,kMuted);ImGui::Text("  LIVE LOADOUT");ImGui::PopStyleColor();ImGui::Separator();
     const ImVec2 p=ImGui::GetCursorScreenPos();const float panelW=ImGui::GetContentRegionAvail().x;
     auto* dl=ImGui::GetWindowDrawList();
-    dl->AddRectFilledMultiColor(p,ImVec2(p.x+panelW,p.y+215),IM_COL32(9,27,34,255),IM_COL32(18,48,55,255),IM_COL32(5,16,22,255),IM_COL32(7,23,29,255));\n    dl->AddRect(p,ImVec2(p.x+panelW,p.y+215),IM_COL32(174,142,86,150),3,0,1.2f);
+    dl->AddRectFilledMultiColor(p,ImVec2(p.x+panelW,p.y+215),IM_COL32(9,27,34,255),IM_COL32(18,48,55,255),IM_COL32(5,16,22,255),IM_COL32(7,23,29,255));
+    dl->AddRect(p,ImVec2(p.x+panelW,p.y+215),IM_COL32(174,142,86,150),3,0,1.2f);
     DrawCompass(dl,ImVec2(p.x+panelW*.50f,p.y+105),78);
     dl->AddText(ImVec2(p.x+25,p.y+180),ImGui::ColorConvertFloat4ToU32(kGold),NationName(profile_.nation));
     ImGui::Dummy(ImVec2(0,228));
@@ -332,7 +338,8 @@ void LauncherApp::Draw(){
     ImGui::SetNextWindowPos(ImVec2(0,0));ImGui::SetNextWindowSize(io.DisplaySize);
     ImGui::PushStyleColor(ImGuiCol_WindowBg,kBg);ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding,0);
     ImGui::Begin("##root",nullptr,ImGuiWindowFlags_NoDecoration|ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoSavedSettings|ImGuiWindowFlags_NoBringToFrontOnFocus);
-    { auto* dl=ImGui::GetWindowDrawList(); const ImVec2 q=ImGui::GetWindowPos(); const ImVec2 z=ImGui::GetWindowSize(); dl->AddRectFilledMultiColor(q,ImVec2(q.x+z.x,q.y+z.y),IM_COL32(4,14,20,255),IM_COL32(7,27,34,255),IM_COL32(2,9,14,255),IM_COL32(3,14,19,255)); for(float x=q.x+32;x<q.x+z.x;x+=72) dl->AddLine(ImVec2(x,q.y),ImVec2(x,q.y+z.y),IM_COL32(190,160,105,9),1); for(float y=q.y+24;y<q.y+z.y;y+=72) dl->AddLine(ImVec2(q.x,y),ImVec2(q.x+z.x,y),IM_COL32(190,160,105,8),1); dl->AddRect(q,ImVec2(q.x+z.x-1,q.y+z.y-1),IM_COL32(177,145,88,120),0,0,2); }\n    DrawHeader();
+    { auto* dl=ImGui::GetWindowDrawList(); const ImVec2 q=ImGui::GetWindowPos(); const ImVec2 z=ImGui::GetWindowSize(); dl->AddRectFilledMultiColor(q,ImVec2(q.x+z.x,q.y+z.y),IM_COL32(4,14,20,255),IM_COL32(7,27,34,255),IM_COL32(2,9,14,255),IM_COL32(3,14,19,255)); for(float x=q.x+32;x<q.x+z.x;x+=72) dl->AddLine(ImVec2(x,q.y),ImVec2(x,q.y+z.y),IM_COL32(190,160,105,9),1); for(float y=q.y+24;y<q.y+z.y;y+=72) dl->AddLine(ImVec2(q.x,y),ImVec2(q.x+z.x,y),IM_COL32(190,160,105,8),1); dl->AddRect(q,ImVec2(q.x+z.x-1,q.y+z.y-1),IM_COL32(177,145,88,120),0,0,2); }
+    DrawHeader();
     const float logH=205.0f;const float gap=14.0f;const float totalW=ImGui::GetContentRegionAvail().x;const float leftW=335.0f;const float rightW=330.0f;const float centerW=std::max(420.0f,totalW-leftW-rightW-gap*2);
     ImGui::BeginChild("upper",ImVec2(0,ImGui::GetContentRegionAvail().y-logH-gap),false);
     DrawLeftStatus(leftW);ImGui::SameLine(0,gap);DrawCenter(centerW);ImGui::SameLine(0,gap);DrawRightProfile(rightW);ImGui::EndChild();
