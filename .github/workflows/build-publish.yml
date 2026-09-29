@@ -55,7 +55,7 @@ jobs:
           if ($replaced -lt 1) { throw "Legacy XNT update endpoint was not found in reconstructed source." }
           $versionPath = "project/version.json"
           $version = Get-Content $versionPath -Raw | ConvertFrom-Json
-          $version.launcherVersion = "1.2.4"
+          $version.launcherVersion = "1.2.5"
           $version | ConvertTo-Json -Depth 8 | Set-Content $versionPath -Encoding UTF8
           Write-Host "Pinned GitHub update channel in $replaced file(s); launcher version set to 1.2.1."
 
@@ -117,8 +117,41 @@ jobs:
         run: |
           $ErrorActionPreference = "Stop"
           Copy-Item "patches/launcher_app.cpp" "project/src/Launcher/launcher_app.cpp" -Force
+          Copy-Item "patches/main.cpp" "project/src/Launcher/main.cpp" -Force
           if (-not (Select-String -Path "project/src/Launcher/launcher_app.cpp" -Pattern "LIVE LOADOUT" -Quiet)) { throw "Visual launcher patch was not applied" }
-          Write-Host "Cinematic launcher visual layer applied"
+          if (-not (Select-String -Path "project/src/Launcher/main.cpp" -Pattern "LoadBackgroundTexture" -Quiet)) { throw "Background renderer patch was not applied" }
+          Write-Host "Cinematic launcher visual layer and background renderer applied"
+
+      - name: Generate packaged nautical background
+        shell: pwsh
+        run: |
+          Add-Type -AssemblyName System.Drawing
+          New-Item -ItemType Directory -Force "project/assets" | Out-Null
+          $bmp = New-Object System.Drawing.Bitmap 1420,960
+          $g = [System.Drawing.Graphics]::FromImage($bmp)
+          $g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
+          $rect = New-Object System.Drawing.Rectangle 0,0,1420,960
+          $brush = New-Object System.Drawing.Drawing2D.LinearGradientBrush $rect,([System.Drawing.Color]::FromArgb(255,5,18,26)),([System.Drawing.Color]::FromArgb(255,22,47,52)),35
+          $g.FillRectangle($brush,$rect)
+          $mist = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(34,210,188,139))
+          $g.FillEllipse($mist,880,80,620,500)
+          $sea = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(190,4,24,34))
+          $g.FillRectangle($sea,0,570,1420,390)
+          $gold = New-Object System.Drawing.Pen ([System.Drawing.Color]::FromArgb(65,191,153,87)),2
+          0..11 | ForEach-Object { $x=80+($_*125); $g.DrawLine($gold,$x,0,$x-360,960) }
+          $ship = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(145,1,7,11))
+          $g.FillPolygon($ship,@((New-Object System.Drawing.Point 880,650),(New-Object System.Drawing.Point 1270,650),(New-Object System.Drawing.Point 1190,720),(New-Object System.Drawing.Point 940,720)))
+          $mast = New-Object System.Drawing.Pen ([System.Drawing.Color]::FromArgb(180,24,17,12)),8
+          $g.DrawLine($mast,1050,650,1050,245);$g.DrawLine($mast,1160,650,1160,330)
+          $sail = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(95,196,183,150))
+          $g.FillPolygon($sail,@((New-Object System.Drawing.Point 1042,275),(New-Object System.Drawing.Point 1042,520),(New-Object System.Drawing.Point 900,475)))
+          $g.FillPolygon($sail,@((New-Object System.Drawing.Point 1060,300),(New-Object System.Drawing.Point 1060,535),(New-Object System.Drawing.Point 1195,485)))
+          $frame = New-Object System.Drawing.Pen ([System.Drawing.Color]::FromArgb(150,186,148,82)),3
+          $g.DrawRectangle($frame,12,12,1395,935)
+          $bmp.Save((Join-Path $PWD "project/assets/background.png"),[System.Drawing.Imaging.ImageFormat]::Png)
+          $g.Dispose();$bmp.Dispose();$brush.Dispose();$mist.Dispose();$sea.Dispose();$gold.Dispose();$ship.Dispose();$mast.Dispose();$sail.Dispose();$frame.Dispose()
+          if (-not (Test-Path "project/assets/background.png")) { throw "background.png generation failed" }
+          Write-Host "Packaged assets/background.png generated"
 
       - name: Configure Win32
         shell: pwsh
@@ -137,7 +170,7 @@ jobs:
         run: |
           $v = Get-Content "project/version.json" -Raw | ConvertFrom-Json
           $base = "https://raw.githubusercontent.com/$env:GITHUB_REPOSITORY/main/releases"
-          & "project/tools/PUBLISH_ALL.ps1" -ModVersion ([string]$v.modVersion) -LauncherVersion ([string]$v.launcherVersion) -BaseUrl $base -OutputDir "../release-out" -ModNotes "Automatic Faction Overhaul runtime update" -LauncherNotes "Launcher 1.2.4: cinematic nautical UI restoration, richer background framing and selected-profile presentation; updater and GitHub stable channel retained"
+          & "project/tools/PUBLISH_ALL.ps1" -ModVersion ([string]$v.modVersion) -LauncherVersion ([string]$v.launcherVersion) -BaseUrl $base -OutputDir "../release-out" -ModNotes "Automatic Faction Overhaul runtime update" -LauncherNotes "Launcher 1.2.5: real DirectX 11 background texture system, packaged nautical background asset, translucent UI layering and stable auto-update"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Complete launcher package assets and updater
