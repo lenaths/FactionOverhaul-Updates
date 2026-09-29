@@ -55,7 +55,7 @@ jobs:
           if ($replaced -lt 1) { throw "Legacy XNT update endpoint was not found in reconstructed source." }
           $versionPath = "project/version.json"
           $version = Get-Content $versionPath -Raw | ConvertFrom-Json
-          $version.launcherVersion = "1.2.3"
+          $version.launcherVersion = "1.2.4"
           $version | ConvertTo-Json -Depth 8 | Set-Content $versionPath -Encoding UTF8
           Write-Host "Pinned GitHub update channel in $replaced file(s); launcher version set to 1.2.1."
 
@@ -112,6 +112,14 @@ jobs:
           }
           Write-Host "Compiled launcher version: $($version.launcherVersion)"
 
+      - name: Apply launcher visual restoration
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          Copy-Item "patches/launcher_app.cpp" "project/src/Launcher/launcher_app.cpp" -Force
+          if (-not (Select-String -Path "project/src/Launcher/launcher_app.cpp" -Pattern "LIVE LOADOUT" -Quiet)) { throw "Visual launcher patch was not applied" }
+          Write-Host "Cinematic launcher visual layer applied"
+
       - name: Configure Win32
         shell: pwsh
         run: |
@@ -129,7 +137,7 @@ jobs:
         run: |
           $v = Get-Content "project/version.json" -Raw | ConvertFrom-Json
           $base = "https://raw.githubusercontent.com/$env:GITHUB_REPOSITORY/main/releases"
-          & "project/tools/PUBLISH_ALL.ps1" -ModVersion ([string]$v.modVersion) -LauncherVersion ([string]$v.launcherVersion) -BaseUrl $base -OutputDir "../release-out" -ModNotes "Automatic Faction Overhaul runtime update" -LauncherNotes "Launcher 1.2.3: updater is bundled with the launcher; GitHub stable update channel retained; visual assets are bundled when present"
+          & "project/tools/PUBLISH_ALL.ps1" -ModVersion ([string]$v.modVersion) -LauncherVersion ([string]$v.launcherVersion) -BaseUrl $base -OutputDir "../release-out" -ModNotes "Automatic Faction Overhaul runtime update" -LauncherNotes "Launcher 1.2.4: cinematic nautical UI restoration, richer background framing and selected-profile presentation; updater and GitHub stable channel retained
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Complete launcher package assets and updater
