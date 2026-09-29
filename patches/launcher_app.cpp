@@ -74,8 +74,7 @@ void LauncherApp::Log(const std::string& message,const char* level){
     {
         std::scoped_lock lock(logsMutex_);logs_.push_back(line);if(logs_.size()>500)logs_.erase(logs_.begin(),logs_.begin()+100);
     }
-    try{fs::create_directories(launcherDir_/"logs");std::ofstream out(launcherDir_/"logs/launcher.log",std::ios::app);out<<line<<"
-";}catch(...){}
+    try{fs::create_directories(launcherDir_/"logs");std::ofstream out(launcherDir_/"logs/launcher.log",std::ios::app);out<<line<<"\n";}catch(...){}
 }
 
 void LauncherApp::RefreshEnvironment(){
@@ -338,7 +337,12 @@ void LauncherApp::Draw(){
     ImGui::SetNextWindowPos(ImVec2(0,0));ImGui::SetNextWindowSize(io.DisplaySize);
     ImGui::PushStyleColor(ImGuiCol_WindowBg,kBg);ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding,0);
     ImGui::Begin("##root",nullptr,ImGuiWindowFlags_NoDecoration|ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoSavedSettings|ImGuiWindowFlags_NoBringToFrontOnFocus);
-    { auto* dl=ImGui::GetWindowDrawList(); const ImVec2 q=ImGui::GetWindowPos(); const ImVec2 z=ImGui::GetWindowSize(); dl->AddRectFilledMultiColor(q,ImVec2(q.x+z.x,q.y+z.y),IM_COL32(4,14,20,255),IM_COL32(7,27,34,255),IM_COL32(2,9,14,255),IM_COL32(3,14,19,255)); for(float x=q.x+32;x<q.x+z.x;x+=72) dl->AddLine(ImVec2(x,q.y),ImVec2(x,q.y+z.y),IM_COL32(190,160,105,9),1); for(float y=q.y+24;y<q.y+z.y;y+=72) dl->AddLine(ImVec2(q.x,y),ImVec2(q.x+z.x,y),IM_COL32(190,160,105,8),1); dl->AddRect(q,ImVec2(q.x+z.x-1,q.y+z.y-1),IM_COL32(177,145,88,120),0,0,2); }
+    { auto* dl=ImGui::GetWindowDrawList(); const ImVec2 q=ImGui::GetWindowPos(); const ImVec2 z=ImGui::GetWindowSize();
+      dl->AddRectFilledMultiColor(q,ImVec2(q.x+z.x,q.y+z.y),IM_COL32(4,14,20,255),IM_COL32(7,27,34,255),IM_COL32(2,9,14,255),IM_COL32(3,14,19,255));
+      for(float x=q.x+32;x<q.x+z.x;x+=72) dl->AddLine(ImVec2(x,q.y),ImVec2(x,q.y+z.y),IM_COL32(190,160,105,9),1);
+      for(float y=q.y+24;y<q.y+z.y;y+=72) dl->AddLine(ImVec2(q.x,y),ImVec2(q.x+z.x,y),IM_COL32(190,160,105,8),1);
+      dl->AddRect(q,ImVec2(q.x+z.x-1,q.y+z.y-1),IM_COL32(177,145,88,120),0,0,2);
+    }
     DrawHeader();
     const float logH=205.0f;const float gap=14.0f;const float totalW=ImGui::GetContentRegionAvail().x;const float leftW=335.0f;const float rightW=330.0f;const float centerW=std::max(420.0f,totalW-leftW-rightW-gap*2);
     ImGui::BeginChild("upper",ImVec2(0,ImGui::GetContentRegionAvail().y-logH-gap),false);
