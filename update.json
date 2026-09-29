@@ -1,20 +1,20 @@
 {
+  "schemaVersion": 2,
   "launcher": {
-    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulLauncher-1.2.4.zip",
-    "notes": "Launcher 1.2.4: cinematic nautical UI restoration, richer background framing and selected-profile presentation; updater and GitHub stable channel retained",
-    "version": "1.2.4",
-    "sha256": "eceabc4a18df866f7ad9e2df5fc739b89aa1b9dc386dcceff37bdd518542c32e",
-    "publishedUtc": "2026-09-29T17:19:36Z"
+    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulLauncher-1.2.5.zip",
+    "version": "1.2.5",
+    "notes": "Launcher 1.2.5: real DirectX 11 background texture system, packaged nautical background asset, translucent UI layering and stable auto-update",
+    "sha256": "c7fb8d84f2926a06c0691a6a3e66fd996b0bbbf29e2bc3e4e2389f8c58ce7b5f",
+    "publishedUtc": "2026-09-29T17:26:10Z"
   },
   "channel": "stable",
-  "publishedUtc": "2026-09-29T17:19:36Z",
+  "publishedUtc": "2026-09-29T17:26:10Z",
   "runtime": {
-    "notes": "Automatic Faction Overhaul runtime update",
-    "sha256": "e8187ee8c6f525a000a252d77948702632de0194cd46f067f46bb8625a3d8580",
     "version": "0.10.0",
+    "sha256": "1ece86ccf502091f5e78c329cf84e23510b4d7b89911b6c18392b096ef8b83bb",
     "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulRuntime-0.10.0.zip",
-    "minimumLauncherVersion": "1.2.4",
-    "publishedUtc": "2026-09-29T17:19:36Z"
-  },
-  "schemaVersion": 2
+    "publishedUtc": "2026-09-29T17:26:10Z",
+    "minimumLauncherVersion": "1.2.5",
+    "notes": "Automatic Faction Overhaul runtime update"
+  }
 }
