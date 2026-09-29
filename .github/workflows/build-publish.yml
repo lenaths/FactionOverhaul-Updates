@@ -55,7 +55,7 @@ jobs:
           if ($replaced -lt 1) { throw "Legacy XNT update endpoint was not found in reconstructed source." }
           $versionPath = "project/version.json"
           $version = Get-Content $versionPath -Raw | ConvertFrom-Json
-          $version.launcherVersion = "1.2.2"
+          $version.launcherVersion = "1.2.3"
           $version | ConvertTo-Json -Depth 8 | Set-Content $versionPath -Encoding UTF8
           Write-Host "Pinned GitHub update channel in $replaced file(s); launcher version set to 1.2.1."
 
@@ -90,6 +90,24 @@ jobs:
           Copy-Item "project/src/Launcher/updater_main.cpp" "maintenance-source/updater_main.cpp" -Force
           Copy-Item "project/src/Launcher/self_update_service.h" "maintenance-source/self_update_service.h" -Force
 
+      - name: Synchronize compiled launcher version
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $version = Get-Content "project/version.json" -Raw | ConvertFrom-Json
+          $p = "project/src/Launcher/launcher_types.h"
+          $c = Get-Content $p -Raw
+          $pattern = 'kLauncherVersion\s*=\s*"[^"]+"'
+          if ($c -notmatch $pattern) { throw "kLauncherVersion declaration not found" }
+          $replacement = 'kLauncherVersion = "' + $version.launcherVersion + '"'
+          $c = [regex]::Replace($c, $pattern, $replacement)
+          Set-Content $p $c -Encoding UTF8
+          $verify = Get-Content $p -Raw
+          if ($verify -notmatch ('kLauncherVersion\s*=\s*"' + [regex]::Escape($version.launcherVersion) + '"')) {
+            throw "Compiled launcher version synchronization failed"
+          }
+          Write-Host "Compiled launcher version: $($version.launcherVersion)"
+
       - name: Configure Win32
         shell: pwsh
         run: |
@@ -107,7 +125,7 @@ jobs:
         run: |
           $v = Get-Content "project/version.json" -Raw | ConvertFrom-Json
           $base = "https://raw.githubusercontent.com/$env:GITHUB_REPOSITORY/main/releases"
-          & "project/tools/PUBLISH_ALL.ps1" -ModVersion ([string]$v.modVersion) -LauncherVersion ([string]$v.launcherVersion) -BaseUrl $base -OutputDir "../release-out" -ModNotes "Automatic Faction Overhaul runtime update" -LauncherNotes "Launcher 1.2.2: updater is bundled with the launcher; GitHub stable update channel retained; visual assets are bundled when present"
+          & "project/tools/PUBLISH_ALL.ps1" -ModVersion ([string]$v.modVersion) -LauncherVersion ([string]$v.launcherVersion) -BaseUrl $base -OutputDir "../release-out" -ModNotes "Automatic Faction Overhaul runtime update" -LauncherNotes "Launcher 1.2.3: updater is bundled with the launcher; GitHub stable update channel retained; visual assets are bundled when present"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Complete launcher package assets and updater
