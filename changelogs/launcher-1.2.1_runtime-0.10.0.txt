@@ -1,0 +1,11 @@
+AC4 Faction Overhaul release
+Launcher: 1.2.1
+Runtime: 0.10.0
+Launcher archive: FactionOverhaulLauncher-1.2.1.zip
+Launcher SHA-256: 57c99322ade9898d3d1818addcdb1ff9d3ef0eadd0d70e2656583f2c73c1ef3e
+Runtime archive: FactionOverhaulRuntime-0.10.0.zip
+Runtime SHA-256: f7b0a13d3d83d84e46cd81926dacdbf6b697913937ac8216b244656af71b508b
+Validation: PASS (package count, versions, filenames, SHA-256 and update.json coherence)
+Build: GitHub Actions windows-latest / Release / Win32
+Launcher fix: stable update manifest now uses the GitHub update channel instead of updates.xntservers.com, addressing WinHTTP 12002 timeout failures.
+Known limitation: launcher 1.1.0 cannot self-bootstrap through its unreachable legacy endpoint; one manual launcher update to 1.2.1 is required. In-game behavior still requires AC4 playtest.

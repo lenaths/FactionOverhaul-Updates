@@ -1,20 +1,20 @@
 {
-  "launcher": {
-    "notes": "Automatic Faction Overhaul launcher update",
-    "version": "1.2.0",
-    "publishedUtc": "2026-09-29T16:10:02Z",
-    "sha256": "8d0e174660f33bbcb934c3a19c41fd124eb65df65f70e590c88f4ad2f439f569",
-    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulLauncher-1.2.0.zip"
-  },
-  "channel": "stable",
+  "publishedUtc": "2026-09-29T16:17:30Z",
+  "schemaVersion": 2,
   "runtime": {
-    "notes": "Automatic Faction Overhaul runtime update",
-    "publishedUtc": "2026-09-29T16:10:02Z",
-    "sha256": "6905258ff98f05d3fd891b6dd8e0a17370fe9db68e7d379e44ac120a96e25341",
-    "version": "0.10.0",
+    "minimumLauncherVersion": "1.2.1",
+    "sha256": "f7b0a13d3d83d84e46cd81926dacdbf6b697913937ac8216b244656af71b508b",
     "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulRuntime-0.10.0.zip",
-    "minimumLauncherVersion": "1.2.0"
+    "version": "0.10.0",
+    "notes": "Automatic Faction Overhaul runtime update",
+    "publishedUtc": "2026-09-29T16:17:30Z"
   },
-  "publishedUtc": "2026-09-29T16:10:02Z",
-  "schemaVersion": 2
+  "launcher": {
+    "publishedUtc": "2026-09-29T16:17:30Z",
+    "sha256": "57c99322ade9898d3d1818addcdb1ff9d3ef0eadd0d70e2656583f2c73c1ef3e",
+    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulLauncher-1.2.1.zip",
+    "notes": "Launcher 1.2.1: update channel migrated from updates.xntservers.com to GitHub stable manifest to prevent WinHTTP 12002 timeouts",
+    "version": "1.2.1"
+  },
+  "channel": "stable"
 }
