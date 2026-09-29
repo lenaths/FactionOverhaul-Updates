@@ -137,6 +137,14 @@ jobs:
           if (-not (Test-Path $updaterInZip)) { throw "Updater packaging verification failed." }
           Write-Host "Launcher package completed with updater and available assets."
 
+          # Repacking changes the launcher archive hash; keep update.json coherent before validation.
+          $manifestPath = "release-out/update.json"
+          $manifest = Get-Content $manifestPath -Raw | ConvertFrom-Json
+          $manifest.launcher.sha256 = (Get-FileHash $zip.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+          $manifest.launcher.packageUrl = "https://raw.githubusercontent.com/$env:GITHUB_REPOSITORY/main/releases/$($zip.Name)"
+          $manifest | ConvertTo-Json -Depth 8 | Set-Content $manifestPath -Encoding UTF8
+          Write-Host "Refreshed launcher SHA-256 in update.json after package completion."
+
       - name: Validate generated release
         shell: pwsh
         run: |
