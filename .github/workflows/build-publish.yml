@@ -35,6 +35,29 @@ jobs:
           Expand-Archive "FactionOverhaul-core-source.zip" -DestinationPath "project" -Force
           New-Item -ItemType Directory -Path "project/assets" -Force | Out-Null
 
+      - name: Pin launcher update channel to GitHub
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $old = "https://updates.xntservers.com/faction-overhaul/update.json"
+          $new = "https://raw.githubusercontent.com/$env:GITHUB_REPOSITORY/main/update.json"
+          $files = Get-ChildItem "project" -Recurse -File | Where-Object { $_.Extension -in ".cpp",".h",".json",".md" }
+          $replaced = 0
+          foreach ($file in $files) {
+            $content = Get-Content $file.FullName -Raw
+            if ($content -and $content.Contains($old)) {
+              $content = $content.Replace($old, $new)
+              Set-Content $file.FullName $content -Encoding UTF8 -NoNewline
+              $replaced++
+            }
+          }
+          if ($replaced -lt 1) { throw "Legacy XNT update endpoint was not found in reconstructed source." }
+          $versionPath = "project/version.json"
+          $version = Get-Content $versionPath -Raw | ConvertFrom-Json
+          $version.launcherVersion = "1.2.1"
+          $version | ConvertTo-Json -Depth 8 | Set-Content $versionPath -Encoding UTF8
+          Write-Host "Pinned GitHub update channel in $replaced file(s); launcher version set to 1.2.1."
+
       - name: Restore pinned third-party dependencies
         shell: pwsh
         run: |
@@ -75,7 +98,7 @@ jobs:
         run: |
           $v = Get-Content "project/version.json" -Raw | ConvertFrom-Json
           $base = "https://raw.githubusercontent.com/$env:GITHUB_REPOSITORY/main/releases"
-          & "project/tools/PUBLISH_ALL.ps1" -ModVersion ([string]$v.modVersion) -LauncherVersion ([string]$v.launcherVersion) -BaseUrl $base -OutputDir "../release-out" -ModNotes "Automatic Faction Overhaul runtime update" -LauncherNotes "Automatic Faction Overhaul launcher update"
+          & "project/tools/PUBLISH_ALL.ps1" -ModVersion ([string]$v.modVersion) -LauncherVersion ([string]$v.launcherVersion) -BaseUrl $base -OutputDir "../release-out" -ModNotes "Automatic Faction Overhaul runtime update" -LauncherNotes "Launcher 1.2.1: update channel migrated from updates.xntservers.com to GitHub stable manifest to prevent WinHTTP 12002 timeouts"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Validate generated release
@@ -105,7 +128,8 @@ jobs:
             "Runtime SHA-256: $($validation.runtimeSha256)",
             "Validation: PASS (package count, versions, filenames, SHA-256 and update.json coherence)",
             "Build: GitHub Actions windows-latest / Release / Win32",
-            "Known limitation: in-game behavior still requires a later AC4 playtest; this release gate only promotes successfully built and internally coherent packages."
+            "Launcher fix: stable update manifest now uses the GitHub update channel instead of updates.xntservers.com, addressing WinHTTP 12002 timeout failures.",
+            "Known limitation: launcher 1.1.0 cannot self-bootstrap through its unreachable legacy endpoint; one manual launcher update to 1.2.1 is required. In-game behavior still requires AC4 playtest."
           ) | Set-Content "changelogs/launcher-$($validation.launcherVersion)_runtime-$($validation.modVersion).txt" -Encoding UTF8
 
           $v = Get-Content "project/version.json" -Raw | ConvertFrom-Json
