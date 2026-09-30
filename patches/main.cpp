@@ -85,7 +85,7 @@ int WINAPI wWinMain(HINSTANCE hInstance,HINSTANCE,LPWSTR,int){
     if(GetFileAttributesA(georgia)!=INVALID_FILE_ATTRIBUTES)io.Fonts->AddFontFromFileTTF(georgia,22.0f);
     ConfigureStyle();
     CoInitializeEx(nullptr,COINIT_APARTMENTTHREADED);
-    LoadBackgroundTexture(ac4fo::launcher::ExecutableDirectory()/L"assets"/L"background.png");
+    LoadBackgroundTexture(ac4fo::launcher::ExecutableDirectory()/L"assets"/L"background.jpg");
     ImGui_ImplWin32_Init(hwnd);ImGui_ImplDX11_Init(g_device,g_context);
 
     ac4fo::launcher::LauncherApp app(ac4fo::launcher::ExecutableDirectory());app.Initialize();
