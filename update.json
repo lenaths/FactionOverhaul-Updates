@@ -1,20 +1,20 @@
 {
   "schemaVersion": 2,
-  "channel": "stable",
-  "runtime": {
-    "minimumLauncherVersion": "1.2.8",
-    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulRuntime-0.10.0.zip",
-    "sha256": "3e19fc73190097c9175786e98a65d623a729efc7dd42cc5a30159d77d6d4e903",
-    "publishedUtc": "2026-09-30T05:48:55Z",
-    "version": "0.10.0",
-    "notes": "Automatic Faction Overhaul runtime update"
-  },
-  "publishedUtc": "2026-09-30T05:48:55Z",
   "launcher": {
-    "notes": "Launcher 1.2.8: approved Black Flag cinematic background asset, transparent UI layering and stable auto-update",
-    "sha256": "0a8863f2f524467bf3dcc6c19dc719f908e5cb14b387eaeea7df3caae71f9332",
-    "publishedUtc": "2026-09-30T05:48:55Z",
+    "publishedUtc": "2026-09-30T05:57:54Z",
+    "version": "1.2.8",
     "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulLauncher-1.2.8.zip",
-    "version": "1.2.8"
-  }
+    "sha256": "04a39b4bd82a7263aa0451920b7bf288445c8c4794380e3e8af2fcf627dae359",
+    "notes": "Launcher 1.2.8: approved Black Flag cinematic background asset, transparent UI layering and stable auto-update"
+  },
+  "runtime": {
+    "notes": "Automatic Faction Overhaul runtime update",
+    "publishedUtc": "2026-09-30T05:57:54Z",
+    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulRuntime-0.10.0.zip",
+    "minimumLauncherVersion": "1.2.8",
+    "version": "0.10.0",
+    "sha256": "c2402cbdb84f3f5fcec99cb2ca0dacd8dddfc709482a89bf0a789070462e91d8"
+  },
+  "publishedUtc": "2026-09-30T05:57:54Z",
+  "channel": "stable"
 }
