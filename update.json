@@ -1,20 +1,20 @@
 {
-  "publishedUtc": "2026-09-29T21:16:38Z",
   "schemaVersion": 2,
   "channel": "stable",
-  "launcher": {
-    "notes": "Launcher 1.2.7: root window transparency fix so packaged DirectX background remains visible behind the UI",
-    "version": "1.2.7",
-    "publishedUtc": "2026-09-29T21:16:38Z",
-    "sha256": "331a86564667f0262f7b7a81616d3a280114d5292151cec35aa55f4b4f8c793b",
-    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulLauncher-1.2.7.zip"
-  },
   "runtime": {
-    "version": "0.10.0",
+    "minimumLauncherVersion": "1.2.8",
     "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulRuntime-0.10.0.zip",
-    "notes": "Automatic Faction Overhaul runtime update",
-    "minimumLauncherVersion": "1.2.7",
-    "publishedUtc": "2026-09-29T21:16:38Z",
-    "sha256": "c4367ade4e67f760976bdc678f06ec1eca5fc0a5f6685b66c135c2166a614cff"
+    "sha256": "3e19fc73190097c9175786e98a65d623a729efc7dd42cc5a30159d77d6d4e903",
+    "publishedUtc": "2026-09-30T05:48:55Z",
+    "version": "0.10.0",
+    "notes": "Automatic Faction Overhaul runtime update"
+  },
+  "publishedUtc": "2026-09-30T05:48:55Z",
+  "launcher": {
+    "notes": "Launcher 1.2.8: approved Black Flag cinematic background asset, transparent UI layering and stable auto-update",
+    "sha256": "0a8863f2f524467bf3dcc6c19dc719f908e5cb14b387eaeea7df3caae71f9332",
+    "publishedUtc": "2026-09-30T05:48:55Z",
+    "packageUrl": "https://raw.githubusercontent.com/lenaths/FactionOverhaul-Updates/main/releases/FactionOverhaulLauncher-1.2.8.zip",
+    "version": "1.2.8"
   }
 }
