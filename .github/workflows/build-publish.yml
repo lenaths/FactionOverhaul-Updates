@@ -96,9 +96,12 @@ jobs:
           Copy-Item "project/src/Launcher/launcher_app.h" "maintenance-source/launcher_app.h" -Force
           Copy-Item "project/src/Launcher/launcher_types.h" "maintenance-source/launcher_types.h" -Force
           Copy-Item "project/src/Launcher/main.cpp" "maintenance-source/main.cpp" -Force
-          Copy-Item "project/src/Runtime/dllmain.cpp" "maintenance-source/runtime_dllmain.cpp" -Force
-          Copy-Item "project/src/Runtime/runtime.cpp" "maintenance-source/runtime.cpp" -Force
-          Copy-Item "project/src/Runtime/runtime.h" "maintenance-source/runtime.h" -Force
+          $runtimeFiles = Get-ChildItem "project/src" -Recurse -File | Where-Object { $_.Extension -in ".cpp",".h" -and ($_.Name -match "runtime|dllmain|hook|inject") }
+          foreach ($rf in $runtimeFiles) {
+            $safe = ($rf.FullName.Substring((Resolve-Path "project").Path.Length + 1) -replace '[\\/:*?"<>|]', '_')
+            Copy-Item $rf.FullName (Join-Path "maintenance-source" $safe) -Force
+          }
+          Write-Host "Exported $($runtimeFiles.Count) runtime/hook source candidates."
 
       - name: Synchronize compiled launcher version
         shell: pwsh
