@@ -7,6 +7,9 @@ on:
     paths:
       - "source/READY"
       - ".github/workflows/build-publish.yml"
+      - "patches/main.cpp"
+      - "patches/launcher_app.cpp"
+      - "background_launcher.jpg"
 
 permissions:
   contents: write
