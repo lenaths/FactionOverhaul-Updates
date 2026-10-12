@@ -28,10 +28,14 @@ jobs:
           if ($actual -ne $expected) { throw "Source archive hash mismatch" }
           Expand-Archive "core-source.zip" -DestinationPath "project" -Force
           if (-not (Test-Path "project/src/Debug/runtime_inspector.cpp")) { throw "Missing runtime inspector" }
-          $original = (Get-FileHash "project/src/Debug/runtime_inspector.cpp" -Algorithm SHA256).Hash
-          $export = (Get-FileHash "maintenance-source/src_Debug_runtime_inspector.cpp" -Algorithm SHA256).Hash
-          if ($original -ne $export) { throw "Archived runtime inspector differs from exported maintenance source" }
-          Write-Host "Verified archived runtime inspector baseline: $original"
+          # Compare the archived bytes with the tracked Git blob. Windows checkout
+          # may convert line endings in the maintenance export (CRLF vs LF).
+          $original = (git hash-object --no-filters "project/src/Debug/runtime_inspector.cpp").Trim()
+          if ($LASTEXITCODE -ne 0) { throw "Cannot hash archived runtime inspector" }
+          $export = (git rev-parse "HEAD:maintenance-source/src_Debug_runtime_inspector.cpp").Trim()
+          if ($LASTEXITCODE -ne 0) { throw "Cannot resolve tracked maintenance inspector" }
+          if ($original -ne $export) { throw "Archived runtime inspector Git blob mismatch" }
+          Write-Host "Verified archived runtime inspector Git blob: $original"
       - name: Restore pinned dependencies
         shell: pwsh
         run: |
